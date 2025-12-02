@@ -1,0 +1,84 @@
+### Financial Statement API - Test Cases
+### Based on FMP API Documentation
+
+### 1. Health Check
+GET http://localhost:3000/health
+
+###
+
+### 2. Get Apple (AAPL) Financial Data - Default (1 annual period)
+GET http://localhost:3000/financials?ticker=AAPL
+
+###
+
+### 3. Get Apple (AAPL) Financial Data - 5 Annual Periods
+GET http://localhost:3000/financials?ticker=AAPL&limit=5&period=annual
+
+###
+
+### 4. Get Apple (AAPL) Quarterly Data - Last 4 Quarters
+GET http://localhost:3000/financials?ticker=AAPL&limit=4&period=quarter
+
+###
+
+### 5. Get Apple (AAPL) - Specific Quarter (Q1)
+GET http://localhost:3000/financials?ticker=AAPL&limit=1&period=Q1
+
+###
+
+### 6. Get Microsoft (MSFT) Financial Data - Annual
+GET http://localhost:3000/financials?ticker=MSFT&limit=3&period=annual
+
+###
+
+### 7. Get Microsoft (MSFT) Financial Data - Quarterly
+GET http://localhost:3000/financials?ticker=MSFT&limit=8&period=quarter
+
+###
+
+### 8. Get Tesla (TSLA) Financial Data
+GET http://localhost:3000/financials?ticker=TSLA&limit=1
+
+###
+
+### 9. Get Google (GOOGL) Financial Data - 5 Years
+GET http://localhost:3000/financials?ticker=GOOGL&limit=5
+
+###
+
+### 10. Get Amazon (AMZN) Financial Data - FY Period
+GET http://localhost:3000/financials?ticker=AMZN&period=FY
+
+###
+
+### ERROR TEST CASES
+
+### 11. Test Error - Missing Ticker
+GET http://localhost:3000/financials
+
+###
+
+### 12. Test Error - Invalid Ticker
+GET http://localhost:3000/financials?ticker=INVALID123456
+
+###
+
+### 13. Test Error - Invalid Limit (negative)
+GET http://localhost:3000/financials?ticker=AAPL&limit=-1
+
+###
+
+### 14. Test Error - Limit Too High (max is 1000)
+GET http://localhost:3000/financials?ticker=AAPL&limit=2000
+
+###
+
+### 15. Test Error - Invalid Period
+GET http://localhost:3000/financials?ticker=AAPL&period=monthly
+
+###
+
+### 16. Test Error - Empty Ticker
+GET http://localhost:3000/financials?ticker=
+
+###
