@@ -93,6 +93,10 @@ lib-cov
 # Serverless directories
 .serverless/
 
+# Vercel
+.vercel
+.vercel/
+
 # FuseBox cache
 .fusebox/
 

@@ -271,6 +271,43 @@ JSON Response to Client
 
 ---
 
+## 🚀 Deployment
+
+### Deploy to Vercel (Recommended)
+
+This API is optimized for serverless deployment on Vercel.
+
+#### Quick Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KaloyanSoftware/financial_statement_api)
+
+#### Manual Deployment
+
+1. **Install Vercel CLI**
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Login and Deploy**
+   ```bash
+   vercel login
+   vercel
+   ```
+
+3. **Set Environment Variables** in Vercel Dashboard:
+   - `FMP_API_KEY` - Your Financial Modeling Prep API key
+   - `FMP_BASE_URL` - `https://financialmodelingprep.com/stable`
+   - `NODE_ENV` - `production`
+
+4. **Deploy to Production**
+   ```bash
+   vercel --prod
+   ```
+
+**📖 Full deployment guide:** See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)
+
+---
+
 ## 🛠️ Development
 
 ### Available Scripts
@@ -287,16 +324,20 @@ npm start
 
 # Clean build artifacts
 npm run clean
+
+# Vercel build (automatic)
+npm run vercel-build
 ```
 
 ### Technology Stack
 
-- **Runtime:** Node.js
+- **Runtime:** Node.js 14+
 - **Language:** TypeScript
 - **Framework:** Express.js
 - **HTTP Client:** Axios
 - **Environment:** dotenv
 - **CORS:** cors middleware
+- **Deployment:** Vercel serverless functions
 
 ---
 
