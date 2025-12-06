@@ -4,7 +4,7 @@ dotenv.config();
 
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import financialsRoutes from './routes/financials.routes';
+import financialsRoutes from '../routes/financials.routes';
 import { errorHandler, notFoundHandler } from './utils/errorHandler';
 
 // Create Express application
@@ -47,4 +47,5 @@ app.use(notFoundHandler);
 // Error Handler - must be last
 app.use(errorHandler);
 
+// Export for Vercel serverless
 export default app;

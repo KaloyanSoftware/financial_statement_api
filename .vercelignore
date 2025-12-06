@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+src/server.ts
+README.md
+TEST_EXAMPLES.md
+test.http
