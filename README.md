@@ -1,107 +1,36 @@
 # Financial Statement API
 
-A TypeScript Express.js API for fetching normalized financial statement data from the Financial Modeling Prep (FMP) API.
+A production-ready TypeScript Express.js API that provides normalized financial statement data for publicly traded companies. Get income statements, balance sheets, and cash flow statements through a simple REST API.
 
-## Features
+---
 
-- ✅ **Clean Architecture** - Modular structure with clear separation of concerns
-- ✅ **TypeScript** - Full type safety with strict mode enabled
-- ✅ **Normalized Data** - All fields returned in snake_case format
-- ✅ **Error Handling** - Comprehensive error handling for all edge cases
-- ✅ **Mock Data Support** - Works without API key using mock data
-- ✅ **CORS Enabled** - Ready for cross-origin requests
-- ✅ **Field Validation** - Validates all required fields from API responses
+## ✨ Features
 
-## API Endpoints
+- 🚀 **Simple REST API** - Single endpoint returns all three financial statements
+- 📊 **Comprehensive Data** - Income statement, balance sheet, and cash flow in one request
+- 🔄 **Normalized Format** - Clean snake_case field names for easy integration
+- ⚡ **Fast & Efficient** - Parallel data fetching for optimal performance
+- 🛡️ **Error Handling** - Comprehensive validation and descriptive error messages
+- 📈 **Flexible Periods** - Support for annual, quarterly, and specific quarter data
+- 🎯 **Type Safe** - Full TypeScript support with strict mode
+- 🔌 **CORS Enabled** - Ready for frontend integrations
 
-### GET /financials
+---
 
-Fetch financial statement data for a given ticker.
+## 🚀 Quick Start
 
-**Query Parameters:**
-- `ticker` (required): Stock ticker symbol (e.g., `AAPL`, `MSFT`)
-- `limit` (optional): Number of periods to fetch (default: `1`, max: `1000`)
-- `period` (optional): Period type (default: `annual`)
-  - `annual` - Annual financial statements
-  - `quarter` - All quarterly statements
-  - `Q1`, `Q2`, `Q3`, `Q4` - Specific quarter
-  - `FY` - Fiscal year
+### Prerequisites
+- Node.js 14+ installed
+- FMP API key (get one free at [Financial Modeling Prep](https://financialmodelingprep.com/developer/docs))
 
-**Example Requests:**
-```bash
-# Get 1 annual period (default)
-GET http://localhost:3000/financials?ticker=AAPL
+### Installation
 
-# Get 5 annual periods
-GET http://localhost:3000/financials?ticker=AAPL&limit=5&period=annual
-
-# Get last 4 quarters
-GET http://localhost:3000/financials?ticker=AAPL&limit=4&period=quarter
-```
-
-**Example Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "ticker": "AAPL",
-    "count": 1,
-    "data": [
-      {
-        "fiscal_year": 2023,
-        "fiscal_period": "2023-09-30",
-        "income_statement": {
-          "revenue": 383285000000,
-          "gross_profit": 169148000000,
-          "operating_income": 114301000000,
-          "net_income": 96995000000,
-          "eps": 6.16
-        },
-        "balance_sheet": {
-          "cash_and_cash_equivalents": 29965000000,
-          "short_term_investments": 31590000000,
-          "total_assets": 352755000000,
-          "total_liabilities": 290437000000,
-          "total_shareholder_equity": 62146000000,
-          "long_term_debt": 106063000000
-        },
-        "cash_flow": {
-          "operating_cash_flow": 110543000000,
-          "capital_expenditure": -10959000000,
-          "free_cash_flow": 99584000000
-        }
-      }
-    ]
-  }
-}
-```
-
-### GET /health
-
-Health check endpoint.
-
-**Example Response:**
-```json
-{
-  "success": true,
-  "message": "Financial Statement API is running",
-  "timestamp": "2025-12-02T10:30:00.000Z"
-}
-```
-
-## Installation
-
-1. **Clone the repository**
-```bash
-cd c:\Users\kkiva\API\financial_statement_api
-```
-
-2. **Install dependencies**
+1. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Configure environment variables**
+2. **Set up environment variables**
 
 Create a `.env` file in the root directory:
 ```env
@@ -110,86 +39,377 @@ FMP_API_KEY=your_api_key_here
 FMP_BASE_URL=https://financialmodelingprep.com/stable
 ```
 
-**Important Notes:**
-- The FMP API base URL is `https://financialmodelingprep.com/stable` (not `/api/v3`)
-- API key is passed as a query parameter: `?apikey=YOUR_KEY`
-- To get an FMP API key, visit: https://financialmodelingprep.com/developer/docs
-- The API requires a valid FMP API key to function
-
-4. **Start the development server**
+3. **Start the server**
 ```bash
+# Development mode (with hot reload)
 npm run dev
+
+# Production mode
+npm run build
+npm start
 ```
 
-The server will start on `http://localhost:3000`
+Server runs at: `http://localhost:3000`
 
-## Scripts
+---
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Compile TypeScript to JavaScript
-- `npm start` - Run production build
-- `npm run clean` - Remove dist directory
+## 📡 API Reference
 
-## 📁 Project Structure
+### Get Financial Statements
 
+**Endpoint:** `GET /financials`
+
+Fetches income statement, balance sheet, and cash flow statement data for a given ticker.
+
+#### Query Parameters
+
+| Parameter | Type   | Required | Default  | Description                                                    |
+|-----------|--------|----------|----------|----------------------------------------------------------------|
+| `ticker`  | string | Yes      | -        | Stock ticker symbol (e.g., 'AAPL', 'MSFT', 'TSLA')            |
+| `limit`   | number | No       | 1        | Number of periods to fetch (1-1000)                            |
+| `period`  | string | No       | 'annual' | Period type: 'annual', 'quarter', 'Q1', 'Q2', 'Q3', 'Q4', 'FY' |
+
+#### Example Requests
+
+```bash
+# Get latest annual financial statements
+curl "http://localhost:3000/financials?ticker=AAPL"
+
+# Get last 5 annual periods
+curl "http://localhost:3000/financials?ticker=AAPL&limit=5"
+
+# Get last 4 quarters
+curl "http://localhost:3000/financials?ticker=AAPL&limit=4&period=quarter"
+
+# Get Q1 data only
+curl "http://localhost:3000/financials?ticker=MSFT&period=Q1"
+```
+
+#### Success Response
+
+**Status Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "data": {
+    "ticker": "AAPL",
+    "count": 1,
+    "data": [
+      {
+        "fiscal_year": 2024,
+        "fiscal_period": "2024-09-28",
+        "income_statement": {
+          "revenue": 391035000000,
+          "gross_profit": 180683000000,
+          "operating_income": 123216000000,
+          "net_income": 93736000000,
+          "eps": 6.08
+        },
+        "balance_sheet": {
+          "cash_and_cash_equivalents": 29943000000,
+          "short_term_investments": 35228000000,
+          "total_assets": 364980000000,
+          "total_liabilities": 308030000000,
+          "total_shareholder_equity": 56950000000,
+          "long_term_debt": 85750000000
+        },
+        "cash_flow": {
+          "operating_cash_flow": 118254000000,
+          "capital_expenditure": -9447000000,
+          "free_cash_flow": 108807000000
+        }
+      }
+    ]
+  }
+}
+```
+
+#### Response Fields
+
+**Income Statement:**
+- `revenue` - Total revenue/sales
+- `gross_profit` - Revenue minus cost of goods sold
+- `operating_income` - Operating profit (EBIT)
+- `net_income` - Bottom line profit after all expenses
+- `eps` - Earnings per share
+
+**Balance Sheet:**
+- `cash_and_cash_equivalents` - Liquid cash on hand
+- `short_term_investments` - Marketable securities
+- `total_assets` - All assets owned
+- `total_liabilities` - All debts and obligations
+- `total_shareholder_equity` - Net worth (assets - liabilities)
+- `long_term_debt` - Debt due after one year
+
+**Cash Flow:**
+- `operating_cash_flow` - Cash from business operations
+- `capital_expenditure` - Investment in fixed assets (negative value)
+- `free_cash_flow` - Cash available after CapEx (calculated as: operating_cash_flow + capital_expenditure)
+
+#### Error Responses
+
+**400 Bad Request** - Invalid parameters
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Ticker parameter is required",
+    "statusCode": 400
+  }
+}
+```
+
+**404 Not Found** - Ticker not found or no data available
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Ticker \"INVALID\" not found. Please verify the ticker symbol is correct.",
+    "statusCode": 404
+  }
+}
+```
+
+**503 Service Unavailable** - API rate limit or service issues
+```json
+{
+  "success": false,
+  "error": {
+    "message": "FMP API rate limit exceeded. Please try again later.",
+    "statusCode": 503
+  }
+}
+```
+
+---
+
+### Health Check
+
+**Endpoint:** `GET /health`
+
+Check if the API is running.
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Financial Statement API is running",
+  "timestamp": "2025-12-06T10:30:00.000Z"
+}
+```
+
+---
+
+## 🧪 Testing
+
+### Using cURL
+```bash
+# Basic test
+curl "http://localhost:3000/financials?ticker=AAPL"
+
+# Multiple periods
+curl "http://localhost:3000/financials?ticker=AAPL&limit=5&period=annual"
+
+# Quarterly data
+curl "http://localhost:3000/financials?ticker=MSFT&limit=4&period=quarter"
+```
+
+### Using REST Client (VS Code)
+See `test.http` file in the project root for pre-configured requests.
+
+### Using Postman/Insomnia
+- **Method:** GET
+- **URL:** `http://localhost:3000/financials`
+- **Query Params:** ticker=AAPL, limit=5, period=annual
+
+---
+
+## 🏗️ Architecture
+
+### Project Structure
 ```
 src/
-├── app.ts                         # Express app configuration (loads .env first!)
+├── app.ts                         # Express app setup & middleware
 ├── server.ts                      # Server entry point
 ├── clients/
-│   └── fmp.client.ts             # FMP API client with real HTTP calls
+│   └── fmp.client.ts             # HTTP client for data source
 ├── controllers/
-│   └── financials.controller.ts  # Request handlers & validation
+│   └── financials.controller.ts  # Request handling & validation
 ├── routes/
-│   └── financials.routes.ts      # Route definitions
+│   └── financials.routes.ts      # API route definitions
 ├── services/
-│   └── financials.service.ts     # Business logic, data fetching & normalization
+│   └── financials.service.ts     # Business logic & data transformation
 ├── types/
-│   └── financials.ts             # TypeScript interfaces
+│   └── financials.ts             # TypeScript type definitions
 └── utils/
-    ├── errorHandler.ts           # Centralized error middleware
+    ├── errorHandler.ts           # Global error middleware
     └── httpErrors.ts             # Custom error classes
 ```
 
-## Error Handling
+### Data Flow
+```
+Client Request
+    ↓
+GET /financials?ticker=AAPL&limit=5
+    ↓
+Controller (validation)
+    ↓
+Service (business logic)
+    ↓
+Client (parallel API calls)
+    ├─→ Income Statement
+    ├─→ Balance Sheet
+    └─→ Cash Flow
+    ↓
+Service (data normalization)
+    ↓
+Controller (response formatting)
+    ↓
+JSON Response to Client
+```
 
-The API handles various error scenarios:
+---
 
-- **Invalid ticker format**: Returns 400 Bad Request
-- **Missing ticker parameter**: Returns 400 Bad Request
-- **No data found for ticker**: Returns 404 Not Found
-- **FMP API timeout**: Returns 503 Service Unavailable
-- **FMP API rate limit**: Returns 503 Service Unavailable
-- **Missing required fields**: Returns 404 Not Found
-- **Invalid JSON response**: Returns 500 Internal Server Error
+## 🛠️ Development
 
-## Data Normalization
+### Available Scripts
 
-All field names are normalized to **snake_case** format:
+```bash
+# Development with hot reload
+npm run dev
 
-- `grossProfit` → `gross_profit`
+# Build TypeScript to JavaScript
+npm run build
+
+# Run production build
+npm start
+
+# Clean build artifacts
+npm run clean
+```
+
+### Technology Stack
+
+- **Runtime:** Node.js
+- **Language:** TypeScript
+- **Framework:** Express.js
+- **HTTP Client:** Axios
+- **Environment:** dotenv
+- **CORS:** cors middleware
+
+---
+
+## 📋 Key Features Explained
+
+### Data Normalization
+All field names are returned in **snake_case** for consistent formatting:
+- API source fields like `grossProfit` → `gross_profit`
 - `operatingIncome` → `operating_income`
-- `totalAssets` → `total_assets`
-- `cashAndCashEquivalents` → `cash_and_cash_equivalents`
+- `totalStockholdersEquity` → `total_shareholder_equity`
 
-## Free Cash Flow Calculation
-
-Free cash flow is automatically calculated as:
+### Free Cash Flow Calculation
+Automatically calculated for each period:
 ```
 free_cash_flow = operating_cash_flow + capital_expenditure
 ```
+*Note: capital_expenditure is negative, so this effectively subtracts it*
 
-Note: `capital_expenditure` is typically negative, so this effectively subtracts it from operating cash flow.
+### Error Handling
+Comprehensive error handling for all scenarios:
+- ✅ Invalid ticker symbols
+- ✅ Missing required parameters
+- ✅ Data source rate limits
+- ✅ Network timeouts
+- ✅ Invalid data responses
+- ✅ Missing required fields
 
-## Technologies
+### Performance
+- Parallel API calls for optimal speed
+- 15-second timeout protection
+- Efficient data transformation
+- Minimal memory footprint
 
-- **Node.js** - Runtime environment
-- **TypeScript** - Type safety
-- **Express.js** - Web framework
-- **Axios** - HTTP client
-- **CORS** - Cross-origin resource sharing
-- **dotenv** - Environment variable management
+---
 
-## License
+## 💡 Usage Examples
+
+### Get Latest Annual Report
+```bash
+curl "http://localhost:3000/financials?ticker=AAPL"
+```
+Perfect for current financial snapshot.
+
+### Get 5-Year Historical Data
+```bash
+curl "http://localhost:3000/financials?ticker=AAPL&limit=5&period=annual"
+```
+Great for trend analysis and historical comparisons.
+
+### Get Quarterly Performance
+```bash
+curl "http://localhost:3000/financials?ticker=AAPL&limit=8&period=quarter"
+```
+Ideal for tracking quarter-over-quarter growth.
+
+### Get Specific Quarter
+```bash
+curl "http://localhost:3000/financials?ticker=AAPL&period=Q2"
+```
+Useful for analyzing specific fiscal quarters.
+
+---
+
+## 📊 Data Notes
+
+### Currency
+All values are in the reporting currency (typically USD for US companies). Values are numeric without currency symbols.
+
+### Data Freshness
+- **Annual data:** Available after 10-K filing (typically within days of fiscal year end)
+- **Quarterly data:** Available after 10-Q filing (typically within 45 days of quarter end)
+
+### Rate Limits
+API rate limits depend on your data provider subscription:
+- Free tier: 250 requests/day
+- Each call to `/financials` makes 3 parallel requests to the data source
+
+---
+
+## 🐛 Troubleshooting
+
+### Server won't start
+- Verify `.env` file exists with required variables
+- Check port 3000 is not already in use
+- Ensure Node.js 14+ is installed
+
+### "Ticker not found" error
+- Verify ticker symbol is correct
+- Check if the company is publicly traded
+- Try a well-known ticker like 'AAPL' to test
+
+### Rate limit errors
+- Check your API key's rate limit
+- Wait before retrying
+- Consider upgrading your plan
+
+### Empty data arrays
+- Some companies may not have complete financial data
+- Try a different period (annual vs quarterly)
+- Verify the company files regular financial statements
+
+---
+
+## 📝 License
 
 ISC
+
+---
+
+## 🤝 Contributing
+
+This is a personal project. Feel free to fork and modify for your own use.
+
+---
+
+**Built with ❤️ using TypeScript and Express.js**
